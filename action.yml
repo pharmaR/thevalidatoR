@@ -102,7 +102,11 @@ runs:
       shell: bash
 
     - name: Install additional tex packages
-      run: tlmgr install ${{ inputs.additional_tlmgr_packages }}
+      run: |
+        tlmgr install ${{ inputs.additional_tlmgr_packages }}
+        tlmgr path add || true
+        tlmgr update --self --all || true
+        fmtutil-sys --all || true
       shell: bash
 
     - name: Run report generator
