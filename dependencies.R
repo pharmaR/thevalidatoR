@@ -40,5 +40,5 @@ chmod -R g+wx ${RUNNER_TEMP}/TinyTeX/bin
 '
   system(permission_update)
 
-  tinytex::reinstall_tinytex(repository = "illinois")
+  tinytex::reinstall_tinytex(repository = "illinois", force = TRUE)
 }
