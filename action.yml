@@ -107,6 +107,7 @@ runs:
         tlmgr path add || true
         tlmgr update --self --all || true
         fmtutil-sys --all || true
+        tlmgr search --global --file "/fancyhdr.sty"
       shell: bash
 
     - name: Run report generator
