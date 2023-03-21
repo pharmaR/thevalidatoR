@@ -23,6 +23,9 @@ if(!dir.exists(paste(Sys.getenv("RUNNER_TEMP"), "TinyTeX", sep="/"))) {
   tinytex_installer <- '
 export TINYTEX_DIR=${RUNNER_TEMP}/TinyTeX
 wget -qO- "https://raw.githubusercontent.com/yihui/tinytex/master/tools/install-unx.sh" | sh -s - --admin --no-path
+wget https://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh
+chmod +x update-tlmgr-latest.sh
+./update-tlmgr-latest.sh -- --upgrade
 mkdir -p ${RUNNER_TEMP}/TinyTeX
 cp -r ~/.TinyTeX/. ${RUNNER_TEMP}/TinyTeX
 rm -rf ~/.TinyTeX
