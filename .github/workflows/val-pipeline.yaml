@@ -92,11 +92,12 @@ jobs:
                          "--no-data", "--no-help", "--no-demo")
                      );
                      library(remotes);
-                     install_version(
+                     zip_dep <- download_version(
                        "${{ matrix.dependency.name }}",
                        version = "${{ matrix.dependency.version }}",
-                       dependencies = FALSE
-                     )'
+                       type = "source", destdir = "."
+                     );
+                     unzip(zip_dep, file = "${{ matrix.dependency.name }}" exdir = "dep")'
 
       - name: Generate validation report for ${{ matrix.dependency.name }}
         id: validation
@@ -104,7 +105,7 @@ jobs:
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         with:
-          report_pkg_dir: ./R_LIBS_USER/${{ matrix.dependency.name }}
+          report_pkg_dir: ./dep/${{ matrix.dependency.name }}
           report_template_path: ${{ inputs.report_template_path }}
           report_output_prefix: ${{ inputs.target }}-${{ matrix.dependency.name }}-${{ matrix.dependency.version }}-validation-report
           report_rmarkdown_format: ${{ inputs.report_rmarkdown_format }}
