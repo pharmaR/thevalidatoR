@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  test-val-pipeline-buckbeats:
+  test-val-pipeline-buckbeak:
     uses: ./.github/workflows/val-pipeline.yaml
     with:
       target: buckbeak
