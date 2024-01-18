@@ -1,4 +1,4 @@
 [
-	{"name": "lattice", "version": "0.20-45"},
-	{"name": "lubridate", "version": "1.9.2"}
+	{"name": "logrx", "version": "0.3.0"},
+	{"name": "tidytlg", "version": "0.1.4"}
 ]
