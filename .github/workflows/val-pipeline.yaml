@@ -97,7 +97,7 @@ jobs:
                        version = "${{ matrix.dependency.version }}",
                        type = "source", destdir = "."
                      );
-                     unzip(zip_dep, file = "${{ matrix.dependency.name }}" exdir = "dep")'
+                     unzip(zip_dep, file = "${{ matrix.dependency.name }}", exdir = "dep")'
 
       - name: Generate validation report for ${{ matrix.dependency.name }}
         id: validation
