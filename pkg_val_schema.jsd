@@ -1,0 +1,235 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "document_type": {
+            "type": "string",
+            "description": "sub validation report (package level)",
+            "example": "sub_val_doc"
+        },
+        "package_info": {
+            "type": "object",
+            "properties": {
+                "package_name": {
+                    "type": "string",
+                    "description": "Specifies the package name",
+                    "example": "admiral"
+                },
+                "package_version": {
+                    "type": "string",
+                    "description": "Specifies the version of the package",
+                    "example": "v0.4.0"
+                },
+                "repository": {
+                    "type": "string",
+                    "description": "Specifies the source repository of package",
+                    "example": "pharmaverse/admiral"
+                }
+            },
+            "required": ["package_name", "package_version", "repository"]
+        },
+        "git_information": {
+            "type": "object",
+            "properties": {
+                "commit_identifier": {
+                    "type": "string",
+                    "description": "Specifies the git commit used within the job run",
+                    "example": "d6cd1e2bd19e03a81132a23b2025920577f84e37"
+                },
+                "branch": {
+                    "type": "string",
+                    "description": "Specifies the git branch used within the job run",
+                    "example": "HEAD"
+                },
+                "commit_time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Specifies the time of the commit",
+                    "example": "2022-01-01T00:00:00Z"
+                }
+            },
+            "required": ["commit_identifier", "branch", "commit_time"]
+        },
+        "validation_type": {
+            "type": "string",
+            "description": "Specifies the package relation to the validation as primary or dependency",
+            "example": "primary",
+            "enum": ["primary", "dependency"]
+        },
+        "server": {
+            "type": "string",
+            "description": "Takes information from the environmental variable Sys.getenv('GITHUB_SERVER_URL')",
+            "example": "http://github.com"
+        },
+        "system_info": {
+            "type": "object",
+            "properties": {
+                "OS": {
+                    "type": "string",
+                    "description": "Specifies the operating system",
+                    "example": "Ubuntu 20.04.3 LTS"
+                },
+                "Platform": {
+                    "type": "string",
+                    "description": "Specifies the platform",
+                    "example": "x86__64-pc-linux-gnu"
+                },
+                "system": {
+                    "type": "string",
+                    "description": "Specifies the system architecture",
+                    "example": "x86__64, linux-gnu"
+                },
+                "execution_timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Specifies time of report generation",
+                    "example": "2022-01-01T00:00:00Z"
+                },
+                "r_session_info": {
+                    "type": "string",
+                    "description": "Specifies the path and file containing the R session information",
+                    "example": "/path/to/r_session_info.txt"
+                },
+                "R_CMD_check": {
+                    "type": "string",
+                    "description": "Specifies the path and file containing the R CMD check installation documentation",
+                    "example": "/path/to/R_CMD_check_log.txt"
+                }
+            },
+            "required": ["OS", "Platform", "system", "execution_timestamp", "r_session_info", "R_CMD_check"]
+        },
+        "metric_based_risk_assessment": {
+            "type": "object",
+            "properties": {
+                "riskmetric_version": {
+                    "type": "string",
+                    "description": "Specifies the riskmetric version",
+                    "example": "v1.0.0"
+                },
+                "has_news": {
+                    "type": "boolean",
+                    "description": "NEWS file contains entry for current version number",
+                    "example": true
+                },
+                "has_vignettes": {
+                    "type": "integer",
+                    "description": "Number of discovered vignettes files",
+                    "example": 3
+                },
+                "acceptable_license": {
+                    "type": "boolean",
+                    "description": "Software is released with an acceptable license",
+                    "example": true
+                },
+                "number_of_downloads": {
+                    "type": "integer",
+                    "description": "Number of downloads in the past year",
+                    "example": 1000
+                }
+            },
+            "required": ["riskmetric_version", "has_news", "has_vignettes", "acceptable_license", "number_of_downloads"]
+        },
+        "test_coverage": {
+            "type": "object",
+            "properties": {
+                "overall_coverage": {
+                    "type": "string",
+                    "description": "Specifies the overall test coverage for the package",
+                    "example": "80%"
+                },
+                "function_coverage": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "function_name": {
+                                "type": "string",
+                                "description": "Specifies the name of the function",
+                                "example": "function1"
+                            },
+                            "coverage": {
+                                "type": "string",
+                                "description": "Specifies the test coverage for the function",
+                                "example": "90%"
+                            }
+                        },
+                        "required": ["function_name", "coverage"]
+                    },
+                    "description": "Specifies the test coverage for each function in the package",
+                    "example": [
+                        {
+                            "function_name": "function1",
+                            "coverage": "90%"
+                        },
+                        {
+                            "function_name": "function2",
+                            "coverage": "85%"
+                        }
+                    ]
+                }
+            },
+            "required": ["overall_coverage", "function_coverage"]
+        },
+        "testing_matrix": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "test_description": {
+                        "type": "string",
+                        "description": "Specifies the description of the test",
+                        "example": "Test for function1"
+                    },
+                    "documentation_link": {
+                        "type": "string",
+                        "description": "Specifies the link to the documentation where the executed unit test can be found",
+                        "example": "/path/to/test-function1.R"
+                    }
+                },
+                "required": ["test_description", "documentation_link"]
+            },
+            "description": "Specifies the testing matrix for the package",
+            "example": [
+                {
+                    "test_description": "Test for function1",
+                    "documentation_link": "/path/to/tests/testthat/test-function1.R"
+                },
+                {
+                    "test_description": "Test for function2",
+                    "documentation_link": "/path/to/tests/testthat/test-function2.R"
+                }
+            ]
+        },
+        "exported_package_objects": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "object_name": {
+                        "type": "string",
+                        "description": "Specifies the name of the exported package object",
+                        "example": "object1"
+                    },
+                    "Tested directly": {
+                        "type": "boolean",
+                        "description": "Indicates whether the exported package object has a direct test",
+                        "example": true
+                    }
+                },
+                "required": ["object_name", "Tested directly"]
+            },
+            "description": "Specifies the testing status for each exported package object",
+            "example": [
+                {
+                    "object_name": "object1",
+                    "Tested directly": true
+                },
+                {
+                    "object_name": "object2",
+                    "Tested directly": false
+                }
+            ]
+        }
+    },
+    "required": ["document_type", "package_info", "git_information", "validation_type", "server", "system_info", "metric_based_risk_assessment", "test_coverage", "testing_matrix", "exported_package_objects"]
+}
