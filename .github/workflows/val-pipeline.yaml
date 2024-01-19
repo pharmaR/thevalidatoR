@@ -83,7 +83,7 @@ jobs:
             mkdir -p ./R_LIBS_USER
             echo '.libPaths("./R_LIBS_USER")' >> ~/.Rprofile
 
-      - name: Install dependency
+      - name: Download dependency
         run: |
             R -q -e 'remotes_url <- "${{ inputs.cran }}/src/contrib/Archive/remotes/remotes_2.4.2.tar.gz";
                      install.packages(remotes_url, repos = NULL, type = "source",
@@ -97,11 +97,11 @@ jobs:
                        version = "${{ matrix.dependency.version }}",
                        type = "source"
                      );
-                     untar(archive_dep, exdir = "./_dep/");
-                     install.packages(
-                       "./_dep/${{ matrix.dependency.name }}", repos = NULL,
-                       type="source", dependencies = FALSE
-                     )'
+                     untar(archive_dep, exdir = "./_dep/")'
+             
+      - name: Get path to dependency
+        id: get-dep-path
+        run: echo "dep-path=$(echo $PWD/_dep/${{ matrix.dependency.name }})\n" >> $GITHUB_OUTPUT
 
       - name: Generate validation report for ${{ matrix.dependency.name }}
         id: validation
@@ -109,7 +109,7 @@ jobs:
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         with:
-          report_pkg_dir: ./_dep/${{ matrix.dependency.name }}
+          report_pkg_dir: ${{ steps.get-dep-path.outputs.dep-path }}
           report_template_path: ${{ inputs.report_template_path }}
           report_output_prefix: ${{ inputs.target }}-${{ matrix.dependency.name }}-${{ matrix.dependency.version }}-validation-report
           report_rmarkdown_format: ${{ inputs.report_rmarkdown_format }}
