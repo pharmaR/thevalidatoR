@@ -95,9 +95,13 @@ jobs:
                      archive_dep <- download_version(
                        "${{ matrix.dependency.name }}",
                        version = "${{ matrix.dependency.version }}",
-                       type = "source", destdir = "."
+                       type = "source"
                      );
-                     untar(archive_dep, exdir = "./_dep/")'
+                     untar(archive_dep, exdir = "./_dep/");
+                     install.packages(
+                       "./_dep/${{ matrix.dependency.name }}", repos = NULL,
+                       type="source", dependencies = FALSE
+                     )'
 
       - name: Generate validation report for ${{ matrix.dependency.name }}
         id: validation
