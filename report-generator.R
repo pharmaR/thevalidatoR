@@ -32,8 +32,6 @@ if (!file.exists(desc_file)) {
   ))
 }
 
-print(pkg_dir)
-
 # Install package dependencies
 if (!disable_install_dev_deps) {
     options("remotes.git_credentials" = git2r::cred_user_pass(
@@ -42,8 +40,6 @@ if (!disable_install_dev_deps) {
     ))
     devtools::install_dev_deps(pkg_dir, upgrade = "never")
 }
-
-print(pkg_dir)
 
 # Set the output file name
 if (report_output_prefix == "") {
