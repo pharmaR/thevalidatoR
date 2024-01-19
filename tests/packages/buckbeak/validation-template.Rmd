@@ -10,6 +10,8 @@ params:
 ```{r, include = FALSE}
 options(width = 80L, covr.record_tests = TRUE)
 
+print(params$pkg_dir)
+
 remotes::install_local(
   params$pkg_dir,
   force = TRUE,
