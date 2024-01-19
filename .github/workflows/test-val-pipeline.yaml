@@ -1,0 +1,17 @@
+---
+name: Test the validation pipeline reusable workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-val-pipeline-buckbeak:
+    uses: ./.github/workflows/val-pipeline.yaml
+    with:
+      target: buckbeak
+      report_pkg_dir: ./tests/packages/buckbeak
+      report_template_path: ./tests/packages/buckbeak/validation-template.Rmd
+      report_rmarkdown_format: html_document
+      additional_tlmgr_packages: "courier ec"

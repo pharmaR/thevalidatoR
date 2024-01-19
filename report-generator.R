@@ -41,6 +41,8 @@ if (!disable_install_dev_deps) {
     devtools::install_dev_deps(pkg_dir, upgrade = "never")
 }
 
+print(pkg_dir)
+
 # Set the output file name
 if (report_output_prefix == "") {
   desc <- read.dcf(desc_file)
