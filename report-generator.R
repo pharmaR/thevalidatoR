@@ -41,6 +41,41 @@ if (!disable_install_dev_deps) {
     devtools::install_dev_deps(pkg_dir, upgrade = "never")
 }
 
+# find .git dir containing the package directory
+gd <- system(
+  sprintf("cd '%s' && git rev-parse --absolute-git-dir", pkg_dir),
+  intern = TRUE
+)
+# define reused git args to be sure we're picking up the right git info
+gd <- sprintf("--git-dir='%s'", gd)
+wt <- sprintf("--work-tree='%s'", pkg_dir)
+
+validation_report_json <- data.frame(
+  Field = c("document_typ","package_name","version", "repository", "commit_sha", "github_reference", "branch", "commit_date", "OS", "Platform", "System", "Execution Time"),
+  Value = c("val_rep_json", #document_typ
+            read.dcf(desc_file)[,'Package'], #package_name
+            read.dcf(desc_file)[,'Version'], #version
+            Sys.getenv('GITHUB_REPOSITORY'), #repository
+            Sys.getenv('GITHUB_SHA'), #commit_sha
+            Sys.getenv('GITHUB_REF'), #github_reference
+            system2( #branch
+              "git",
+              list(gd, wt, "rev-parse", "--abbrev-ref", "HEAD"),
+              stdout = TRUE
+            ),
+            system2( #commit_date
+              "git",
+              list(gd, wt, "show", "-s", "--format=%ci", "HEAD"),
+              stdout = TRUE
+            ),
+            sessionInfo()$running, #OS
+            R.version$platform, #Platform
+            R.version$system, #System
+            format(Sys.time(), tz = "UTC", usetz = TRUE) #Execution Time
+  ))
+#creates json
+json_object <- jsonlite::toJSON(validation_report_json, pretty = TRUE)
+
 # Set the output file name
 if (report_output_prefix == "") {
   desc <- read.dcf(desc_file)
@@ -51,14 +86,10 @@ if (report_output_prefix == "") {
   )
 }
 
-# allow rmarkdown to choose appropriate file extension for output format
-report_file_path <- rmarkdown::render(
-  template_path,
-  output_dir = getwd(),  # create report wherever R script was called
-  output_file = report_output_prefix,
-  output_format = report_format,
-  params = list(pkg_dir = pkg_dir)
-)
+report_file_path <- paste0(report_output_prefix,".json")
+
+# Write the JSON object to a file
+write(json_object, file = report_file_path)
 
 # Create a tmp file which contains the final report filename
 writeLines(report_file_path, "/tmp/report_file_path.txt")
