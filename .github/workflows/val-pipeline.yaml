@@ -19,21 +19,6 @@ on:
         required: false
         default: '.'
         type: string
-      report_template_path:
-        description: 'File path of the R markdown template to use for the report'
-        required: false
-        default: 'template.Rmd'
-        type: string
-      report_rmarkdown_format:
-        description: 'The output format to use when rendering the report'
-        required: false
-        default: 'pdf_document'
-        type: string
-      additional_tlmgr_packages:
-        description: 'Additional tex packages to install with tlmgr'
-        required: false
-        default: 'courier ec'
-        type: string
 
 jobs:
   dependencies-matrix:
@@ -110,10 +95,7 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         with:
           report_pkg_dir: ${{ steps.get-dep-path.outputs.dep-path }}
-          report_template_path: ${{ inputs.report_template_path }}
           report_output_prefix: ${{ inputs.target }}-${{ matrix.dependency.name }}-${{ matrix.dependency.version }}-validation-report
-          report_rmarkdown_format: ${{ inputs.report_rmarkdown_format }}
-          additional_tlmgr_packages: ${{ inputs.additional_tlmgr_packages }}
 
       - name: Upload ${{ matrix.dependency.name }} validation report
         uses: actions/upload-artifact@v2
@@ -145,10 +127,7 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         with:
           report_pkg_dir: ${{ inputs.report_pkg_dir }}
-          report_template_path: ${{ inputs.report_template_path }}
           report_output_prefix: validation_report
-          report_rmarkdown_format: ${{ inputs.report_rmarkdown_format }}
-          additional_tlmgr_packages: ${{ inputs.additional_tlmgr_packages }}
 
       - name: Upload ${{ inputs.target }} validation report
         uses: actions/upload-artifact@v2
