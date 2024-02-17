@@ -7,8 +7,8 @@ on:
       - main
 
 jobs:
-  test-val-pipeline-buckbeak:
+  test-val-pipeline-aragog:
     uses: ./.github/workflows/val-pipeline.yaml
     with:
-      target: buckbeak
-      report_pkg_dir: ./tests/packages/buckbeak
+      target: aragog
+      report_pkg_dir: ./tests/packages/aragog
