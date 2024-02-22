@@ -9,4 +9,7 @@ License: file LICENSE
 Type: Package
 Encoding: UTF-8
 RoxygenNote: 7.0.2
+Imports: 
+    logrx (>= 0.3.0),
+    tidytlg (>= 0.1.4)
 Suggests: testthat

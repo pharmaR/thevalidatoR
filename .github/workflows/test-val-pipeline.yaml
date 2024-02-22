@@ -1,0 +1,14 @@
+---
+name: Test the validation pipeline reusable workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-val-pipeline-aragog:
+    uses: ./.github/workflows/val-pipeline.yaml
+    with:
+      target: aragog
+      report_pkg_dir: ./tests/packages/aragog
